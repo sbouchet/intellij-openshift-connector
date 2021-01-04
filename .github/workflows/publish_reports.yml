@@ -2,17 +2,13 @@ name: Publish reports
 
 on:
   workflow_run:
-    workflows: ["Java CI with Gradle"]
-    types:
-      - completed
+    workflows: [ "Java CI with Gradle" ]
+      types:
+        - completed
 
 jobs:
-  publish:
-    name: Publish Test Report
-    runs-on: ubuntu-latest
-    steps:
-      - name : Publish Integration tests reports
-        uses: scacap/action-surefire-report@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/test-results/**/TEST-*.xml'
+  - name: Publish Test Report
+      uses: scacap/action-surefire-report@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        report_paths: '**/build/test-results/**/TEST-*.xml'
