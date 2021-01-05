@@ -2,9 +2,9 @@ name: Publish reports
 
 on:
   workflow_run:
-    workflows: [ "Java CI with Gradle" ]
-      types:
-        - completed
+    workflows: ["Java CI with Gradle"]
+    types:
+      - completed
 
 jobs:
   - name: Publish Test Report
