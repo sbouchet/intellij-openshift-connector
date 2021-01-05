@@ -53,10 +53,10 @@ jobs:
       - name: Build with Gradle
         continue-on-error: true
         run: ./gradlew integrationTest
-      - name: Stop cluster and cleanup
-        run: |
-          oc cluster down
-          sudo rm -rf ./openshift.local.clusterup/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux-integration-test-reports
+          path: build/reports
 
   build-macos:
     runs-on: macos-latest
