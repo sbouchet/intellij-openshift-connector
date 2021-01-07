@@ -31,12 +31,10 @@ jobs:
             });
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/reports.zip', Buffer.from(download.data));
-      - run: |
-          unzip reports.zip
-          ls -al
+      - run: unzip reports.zip
       - name : Publish Integration tests reports
         uses: scacap/action-surefire-report@v1
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          report_paths: '**/build/test-results/**/TEST-*.xml'
+          report_paths: '**/TEST-*.xml'
           commit: ${{github.event.workflow_run.event.commit}}
