@@ -56,7 +56,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: linux-integration-test-reports
-          path: build/reports
+          path: build/test-results
 
   build-macos:
     runs-on: macos-latest
