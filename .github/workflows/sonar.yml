@@ -53,4 +53,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./gradlew jacocoTestReport
-          ./gradlew sonarqube
+          ./gradlew sonarqube -Dsonar.branch.name=${{github.event.workflow_run.event.base.ref}} -Dsonar.branch.target=${{github.event.workflow_run.event.number}}
