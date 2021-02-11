@@ -56,4 +56,9 @@ public class OdoCliApplicationTest extends OdoCliTest {
             }
         }
     }
+    
+    @Test
+    public void failintentionnaly() {
+        fail("testing reports");
+    }
 }
