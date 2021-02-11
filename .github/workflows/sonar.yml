@@ -45,6 +45,7 @@ jobs:
             }
       - name: Unzip artifacts
         run: |
+          echo -e ${{github.event.workflow_run.event}}
           unzip -d ${{github.workspace}}/build linux-integration-test-reports.zip;
           unzip -d ${{github.workspace}}/build ubuntu-latest-test-reports.zip;
       - name: Build and analyze
