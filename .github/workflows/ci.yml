@@ -26,8 +26,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build --continue
-        continue-on-error: true
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: ${{ matrix.os }}-test-reports
           path: |
@@ -62,8 +62,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew integrationTest --continue
-        continue-on-error: true
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: linux-integration-test-reports
           path: |
