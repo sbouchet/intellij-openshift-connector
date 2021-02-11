@@ -23,4 +23,8 @@ public class DescribeApplicationActionTest extends ActionTest {
   protected void verifyApplication(boolean visible) {
     assertTrue(visible);
   }
+  
+    public void failintentionnaly() {
+        fail("testing reports");
+    }
 }
