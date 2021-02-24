@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Save Sonar config on PR
-        if: github.event == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: |
           mkdir -p ./prInfo
           echo ${{ github.event.number }} > ./prInfo/PR
@@ -84,15 +84,3 @@ jobs:
           path: |
             build/test-results/**/*.xml
             build/jacoco/
-      - name: Save Sonar config on PR
-        if: github.event == 'pull_request'
-        run: |
-          mkdir -p ./prInfo
-          echo ${{ github.event.number }} > ./prInfo/PR
-          echo ${{ github.base_ref }} > ./prInfo/base_ref
-          echo ${{ github.head_ref }} > ./prInfo/head_ref
-      - uses: actions/upload-artifact@v2
-        if: github.event == 'pull_request'
-        with:
-          name: prInfo
-          path: prInfo/
