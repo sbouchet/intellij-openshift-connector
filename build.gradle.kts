@@ -168,6 +168,11 @@ sourceSets {
     }
 }
 
+configurations.all {
+    exclude(group = "org.slf4j", module = "slf4j-api")
+    exclude(group = "bundledPlugin", module = "Docker")
+}
+
 configurations["itRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
 configurations["itImplementation"].extendsFrom(configurations.testImplementation.get())
 
@@ -281,6 +286,23 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
+    }
+}
+
+// https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html#runIdeForUiTests
+val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
+    task {
+        jvmArgumentProviders += CommandLineArgumentProvider {
+            listOf(
+                "-Drobot-server.port=8082",
+                "-Dide.mac.message.dialogs.as.sheets=false",
+                "-Djb.privacy.policy.text=<!--999.999-->",
+                "-Djb.consents.confirmation.enabled=false",
+            )
+        }
+    }
+    plugins {
+        robotServerPlugin()
     }
 }
 
