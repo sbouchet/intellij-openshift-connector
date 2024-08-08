@@ -24,73 +24,77 @@ public class SandboxRegistrationServerMock {
 
   private String currentSignupResponse;
 
-  private static final String initialSignupResponse = "{\n" +
-    "            \"apiEndpoint\": \"https://api.crc.testing:6443\",\n" +
-    "            \"cheDashboardURL\": \"\",\n" +
-    "            \"clusterName\": \"\",\n" +
-    "            \"company\": \"\",\n" +
-    "            \"compliantUsername\": \"\",\n" +
-    "            \"consoleURL\": \"\",\n" +
-    "            \"familyName\": \"\",\n" +
-    "            \"givenName\": \"\",\n" +
-    "            \"status\": {\n" +
-    "                \"ready\": false,\n" +
-    "                \"reason\": \"PendingApproval\",\n" +
-    "                \"verificationRequired\": true\n" +
-    "            },\n" +
-    "            \"username\": \"\"\n" +
-    "        }";
+  private static final String initialSignupResponse = """
+    {
+                "apiEndpoint": "https://api.crc.testing:6443",
+                "cheDashboardURL": "",
+                "clusterName": "",
+                "company": "",
+                "compliantUsername": "",
+                "consoleURL": "",
+                "familyName": "",
+                "givenName": "",
+                "status": {
+                    "ready": false,
+                    "reason": "PendingApproval",
+                    "verificationRequired": true
+                },
+                "username": ""
+            }""";
 
-  private static final String afterVerificationSignupResponse = "{\n" +
-    "            \"apiEndpoint\": \"https://api.crc.testing:6443\",\n" +
-    "            \"cheDashboardURL\": \"\",\n" +
-    "            \"clusterName\": \"\",\n" +
-    "            \"company\": \"\",\n" +
-    "            \"compliantUsername\": \"\",\n" +
-    "            \"consoleURL\": \"\",\n" +
-    "            \"familyName\": \"\",\n" +
-    "            \"givenName\": \"\",\n" +
-    "            \"status\": {\n" +
-    "                \"ready\": false,\n" +
-    "                \"reason\": \"PendingApproval\",\n" +
-    "                \"verificationRequired\": false\n" +
-    "            },\n" +
-    "            \"username\": \"\"\n" +
-    "        }";
+  private static final String afterVerificationSignupResponse = """
+    {
+                "apiEndpoint": "https://api.crc.testing:6443",
+                "cheDashboardURL": "",
+                "clusterName": "",
+                "company": "",
+                "compliantUsername": "",
+                "consoleURL": "",
+                "familyName": "",
+                "givenName": "",
+                "status": {
+                    "ready": false,
+                    "reason": "PendingApproval",
+                    "verificationRequired": false
+                },
+                "username": ""
+            }""";
 
-  private static final String afterVerification1SignupResponse = "{\n" +
-    "            \"apiEndpoint\": \"https://api.crc.testing:6443\",\n" +
-    "            \"cheDashboardURL\": \"\",\n" +
-    "            \"clusterName\": \"\",\n" +
-    "            \"company\": \"\",\n" +
-    "            \"compliantUsername\": \"\",\n" +
-    "            \"consoleURL\": \"\",\n" +
-    "            \"familyName\": \"\",\n" +
-    "            \"givenName\": \"\",\n" +
-    "            \"status\": {\n" +
-    "                \"ready\": false,\n" +
-    "                \"reason\": \"\",\n" +
-    "                \"verificationRequired\": false\n" +
-    "            },\n" +
-    "            \"username\": \"\"\n" +
-    "        }";
+  private static final String afterVerification1SignupResponse = """
+    {
+                "apiEndpoint": "https://api.crc.testing:6443",
+                "cheDashboardURL": "",
+                "clusterName": "",
+                "company": "",
+                "compliantUsername": "",
+                "consoleURL": "",
+                "familyName": "",
+                "givenName": "",
+                "status": {
+                    "ready": false,
+                    "reason": "",
+                    "verificationRequired": false
+                },
+                "username": ""
+            }""";
 
-  private static final String afterVerification2SignupResponse = "{\n" +
-    "            \"apiEndpoint\": \"https://api.crc.testing:6443\",\n" +
-    "            \"cheDashboardURL\": \"\",\n" +
-    "            \"clusterName\": \"\",\n" +
-    "            \"company\": \"\",\n" +
-    "            \"compliantUsername\": \"\",\n" +
-    "            \"consoleURL\": \"\",\n" +
-    "            \"familyName\": \"\",\n" +
-    "            \"givenName\": \"\",\n" +
-    "            \"status\": {\n" +
-    "                \"ready\": true,\n" +
-    "                \"reason\": \"\",\n" +
-    "                \"verificationRequired\": false\n" +
-    "            },\n" +
-    "            \"username\": \"\"\n" +
-    "        }";
+  private static final String afterVerification2SignupResponse = """
+    {
+                "apiEndpoint": "https://api.crc.testing:6443",
+                "cheDashboardURL": "",
+                "clusterName": "",
+                "company": "",
+                "compliantUsername": "",
+                "consoleURL": "",
+                "familyName": "",
+                "givenName": "",
+                "status": {
+                    "ready": true,
+                    "reason": "",
+                    "verificationRequired": false
+                },
+                "username": ""
+            }""";
 
   public SandboxRegistrationServerMock(int port) throws IOException {
     server = HttpServer.create(new InetSocketAddress(InetAddress.getByName(null), port), 0);
