@@ -49,7 +49,7 @@ dependencies {
     }
 
     implementation(libs.openshift.client) {
-        exclude(group = "org.slf4j", module = "slf4j-api")
+        //exclude(group = "org.slf4j", module = "slf4j-api")
     }
     implementation(libs.devtools.common)
     implementation(libs.keycloak)
@@ -63,16 +63,6 @@ dependencies {
     testImplementation(libs.easytesting)
     testImplementation(libs.mockserver.client)
     testImplementation(libs.mockserver.netty)
-
-    // for integration tests
-    testImplementation(libs.junit.platform.launcher)
-    testImplementation(libs.junit.platform.suite)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
-    testImplementation(libs.devtools.common.ui.test)
-    testImplementation(libs.awaitility)
 
     constraints {
         implementation("io.undertow:undertow-core:2.3.15.Final") { // keycloak
@@ -181,9 +171,7 @@ sourceSets {
     create("integrationTest") {
         java.srcDir("src/it/java")
         resources.srcDir("src/it/resources")
-        compileClasspath += sourceSets.main.get().compileClasspath
-        compileClasspath += sourceSets.test.get().compileClasspath
-        compileClasspath += configurations.testRuntimeClasspath.get()
+        compileClasspath += sourceSets.main.get().compileClasspath + sourceSets.test.get().compileClasspath + configurations.testRuntimeClasspath.get()
         runtimeClasspath += output + compileClasspath
     }
 }
@@ -204,14 +192,21 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
             showFullStackTraces = true
         }
         jvmArgs("-Djava.awt.headless=true")
-    }
-
-    prepareSandboxTask {
-        //runtimeClasspath = sourceSets["integrationTest"].runtimeClasspath
+        mustRunAfter(tasks["test"])
     }
 
     plugins {
         robotServerPlugin()
+    }
+    dependencies {
+        testImplementation(libs.junit.platform.launcher)
+        testImplementation(libs.junit.platform.suite)
+        testImplementation(libs.junit.jupiter)
+        testImplementation(libs.junit.jupiter.api)
+        testImplementation(libs.junit.jupiter.engine)
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation(libs.devtools.common.ui.test)
+        testImplementation(libs.awaitility)
     }
 }
 /*
