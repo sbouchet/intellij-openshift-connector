@@ -54,7 +54,7 @@ dependencies {
     implementation(libs.jjwt.impl)
     implementation(libs.jjwt.jackson)
     implementation(libs.converter.jackson)
-    implementation("org.jetbrains:annotations:24.0.0")
+    implementation(libs.annotations) // to build against platform <= 2023.2
 
     // for unit tests
     testImplementation(libs.junit)
