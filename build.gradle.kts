@@ -48,9 +48,7 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
-    implementation(libs.openshift.client) {
-        //exclude(group = "org.slf4j", module = "slf4j-api")
-    }
+    implementation(libs.openshift.client)
     implementation(libs.devtools.common)
     implementation(libs.keycloak)
     implementation(libs.jjwt.impl)
@@ -159,31 +157,26 @@ tasks {
         into("build/idea-sandbox/config-uiTest")
     }
 
-    register("list") {
-        val classpath = sourceSets["integrationTest"].runtimeClasspath
-        doLast {
-            println(classpath.files)
-        }
-    }
 }
 
 sourceSets {
-    create("integrationTest") {
-        java.srcDir("src/it/java")
-        resources.srcDir("src/it/resources")
-        compileClasspath += sourceSets.main.get().compileClasspath + sourceSets.test.get().compileClasspath + configurations.testRuntimeClasspath.get()
+    create("it") {
+        description = "integrationTest"
+        compileClasspath += sourceSets.main.get().compileClasspath + sourceSets.test.get().compileClasspath
         runtimeClasspath += output + compileClasspath
     }
 }
+
+configurations["itRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
+configurations["itImplementation"].extendsFrom(configurations.testImplementation.get())
 
 val integrationTest by intellijPlatformTesting.testIde.registering {
     task {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
         description = "Runs the integration tests."
         group = "verification"
-        testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-        classpath = sourceSets["integrationTest"].runtimeClasspath
-        //outputs.upToDateWhen { false }
+        testClassesDirs = sourceSets["it"].output.classesDirs
+        classpath = sourceSets["it"].runtimeClasspath
         testlogger {
             showStandardStreams = true
             showPassedStandardStreams = false
@@ -192,7 +185,7 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
             showFullStackTraces = true
         }
         jvmArgs("-Djava.awt.headless=true")
-        mustRunAfter(tasks["test"])
+        shouldRunAfter(tasks["test"])
     }
 
     plugins {
@@ -209,13 +202,6 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.awaitility)
     }
 }
-/*
-configurations {
-    integrationTestImplementation.extendsFrom testImplementation
-    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
-}
-
-*/
 
 /*
 tasks.register('clusterIntegrationUITest', Test) {
@@ -274,3 +260,9 @@ tasks.register('publicIntegrationUITest', Test) {
 
 */
 
+// below is only to correctly configure IDEA project settings
+idea {
+    module {
+        testSources.from(sourceSets["it"].java.srcDirs)
+    }
+}
