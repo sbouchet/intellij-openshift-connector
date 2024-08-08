@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.jjwt.impl)
     implementation(libs.jjwt.jackson)
     implementation(libs.converter.jackson)
+    implementation("org.jetbrains:annotations:24.0.0")
 
     // for unit tests
     testImplementation(libs.junit)
@@ -191,6 +192,7 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
     plugins {
         robotServerPlugin()
     }
+
     dependencies {
         testImplementation(libs.junit.platform.launcher)
         testImplementation(libs.junit.platform.suite)
