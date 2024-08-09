@@ -205,62 +205,84 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
     }
 }
 
-/*
-tasks.register('clusterIntegrationUITest', Test) {
-    dependsOn copyKey
-    useJUnitPlatform {
-        includeTags 'ui-test'
+val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
+    task {
+        dependsOn(tasks["copyKey"])
+        systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperties["CLUSTER_ALREADY_LOGGED_IN"] = System.getenv("CLUSTER_ALREADY_LOGGED_IN") ?: false
+        description = "Runs the cluster integration UI tests."
+        group = "verification"
+        testClassesDirs = sourceSets["it"].output.classesDirs
+        classpath = sourceSets["it"].runtimeClasspath
+        testlogger {
+            showStandardStreams = true
+            showPassedStandardStreams = false
+            showSkippedStandardStreams = false
+            showFailedStandardStreams = true
+            showFullStackTraces = true
+        }
+        jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
+        include("**/ClusterTestsSuite.class")
+        useJUnitPlatform {
+            includeTags("ui-test")
+        }
+        shouldRunAfter(tasks["test"])
     }
-    systemProperties['com.redhat.devtools.intellij.telemetry.mode'] = 'disabled'
-    systemProperties['CLUSTER_ALREADY_LOGGED_IN'] = System.getenv('CLUSTER_ALREADY_LOGGED_IN') ?: 'false'
-    description = 'Runs the cluster integration UI tests.'
-    group = 'verification'
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    outputs.upToDateWhen { true }
-    testlogger {
-        showStandardStreams true
-        showPassedStandardStreams false
-        showSkippedStandardStreams false
-        showFailedStandardStreams true
-        showFullStackTraces true
+
+    plugins {
+        robotServerPlugin()
     }
-    jvmArgs "-Djava.awt.headless=false" // use of clipboard in AboutPublicTest, set to false
-    jacoco {
-        includeNoLocationClasses = true
-        excludes = ["jdk.internal.*"]
-    } */
-//    include '**/ClusterTestsSuite.class'
-//}
-/*
-tasks.register('publicIntegrationUITest', Test) {
-    dependsOn copyKey
-    useJUnitPlatform {
-        includeTags 'ui-test'
+
+    dependencies {
+        testImplementation(libs.junit.platform.launcher)
+        testImplementation(libs.junit.platform.suite)
+        testImplementation(libs.junit.jupiter)
+        testImplementation(libs.junit.jupiter.api)
+        testImplementation(libs.junit.jupiter.engine)
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation(libs.devtools.common.ui.test)
+        testImplementation(libs.awaitility)
     }
-    systemProperties['com.redhat.devtools.intellij.telemetry.mode'] = 'disabled'
-    description = 'Runs the public integration UI tests.'
-    group = 'verification'
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    outputs.upToDateWhen { true }
-    testlogger {
-        showStandardStreams true
-        showPassedStandardStreams false
-        showSkippedStandardStreams false
-        showFailedStandardStreams true
-        showFullStackTraces true
-    }
-    jvmArgs "-Djava.awt.headless=false" // use of clipboard in AboutPublicTest, set to false
-    jacoco {
-        includeNoLocationClasses = true
-        excludes = ["jdk.internal.*"]
-    } */
-//    include '**/PublicTestsSuite.class'
-/*
 }
 
-*/
+val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
+    task {
+        dependsOn(tasks["copyKey"])
+        systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        description = "Runs the public integration UI tests."
+        group = "verification"
+        testClassesDirs = sourceSets["it"].output.classesDirs
+        classpath = sourceSets["it"].runtimeClasspath
+        testlogger {
+            showStandardStreams = true
+            showPassedStandardStreams = false
+            showSkippedStandardStreams = false
+            showFailedStandardStreams = true
+            showFullStackTraces = true
+        }
+        jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
+        include("**/PublicTestsSuite.class")
+        useJUnitPlatform {
+            includeTags("ui-test")
+        }
+        shouldRunAfter(tasks["test"])
+    }
+
+    plugins {
+        robotServerPlugin()
+    }
+
+    dependencies {
+        testImplementation(libs.junit.platform.launcher)
+        testImplementation(libs.junit.platform.suite)
+        testImplementation(libs.junit.jupiter)
+        testImplementation(libs.junit.jupiter.api)
+        testImplementation(libs.junit.jupiter.engine)
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation(libs.devtools.common.ui.test)
+        testImplementation(libs.awaitility)
+    }
+}
 
 // below is only to correctly configure IDEA project settings
 idea {
