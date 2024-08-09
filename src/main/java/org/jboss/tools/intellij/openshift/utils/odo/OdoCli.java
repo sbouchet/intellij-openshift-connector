@@ -468,7 +468,7 @@ public class OdoCli extends Cli implements OdoDelegate {
           LOGGER.warn(e.getLocalizedMessage(), e);
         }
         FileUtil.delete(new File(dir, "devfile.yaml").toPath());
-        FileUtil.deleteRecursively(new File(dir, PLUGIN_FOLDER).toPath());
+        FileUtil.delete(new File(dir, PLUGIN_FOLDER).toPath());
       } else {
         args.add("--namespace");
         args.add(project);

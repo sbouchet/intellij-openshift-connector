@@ -16,7 +16,7 @@ awaitility = "4.2.1"
 annotations = "24.0.0"
 
 # plugins
-gradleIntelliJPlugin = "2.0.0"
+gradleIntelliJPlugin = "2.0.1"
 testlogger = "4.0.0"
 sonarqube = "5.1.0.4882"
 
