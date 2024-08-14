@@ -154,9 +154,9 @@ public class OdoCliComponentTest extends OdoCliTest {
 
   @Test
   public void checkCreateComponentStarter() throws IOException, ExecutionException, InterruptedException {
-    String starter_path = FileUtil.createTempDirectory("go-starter", "").getPath();
-    createComponent(project, component, "go-starter", starter_path);
-    List<ComponentDescriptor> descriptors = odo.discover(starter_path);
+    String starterPath = FileUtil.createTempDirectory("go-starter", "").getPath();
+    createComponent(project, component, "go-starter", starterPath);
+    List<ComponentDescriptor> descriptors = odo.discover(starterPath);
     assertNotNull(descriptors);
     assertEquals(1, descriptors.size());
   }

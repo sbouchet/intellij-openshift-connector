@@ -109,6 +109,7 @@ tasks {
 
     runIde {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "debug")
+        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
         //systemProperty("jboss.sandbox.api.endpoint", "http://localhost:3000") // enable when running sandbox locally, see below
     }
 
@@ -170,7 +171,7 @@ sourceSets {
 
 configurations.all {
     exclude(group = "org.slf4j", module = "slf4j-api")
-    exclude(group = "bundledPlugin", module = "Docker")
+    exclude(group = "bundledPlugin", module = "Docker") // suppress multiple SLF4J providers
 }
 
 configurations["itRuntimeOnly"].extendsFrom(configurations.testRuntimeOnly.get())
@@ -179,6 +180,7 @@ configurations["itImplementation"].extendsFrom(configurations.testImplementation
 val integrationTest by intellijPlatformTesting.testIde.registering {
     task {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
         description = "Runs the integration tests."
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
@@ -214,6 +216,7 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
     task {
         dependsOn(tasks["copyKey"])
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
         systemProperties["CLUSTER_ALREADY_LOGGED_IN"] = System.getenv("CLUSTER_ALREADY_LOGGED_IN") ?: false
         description = "Runs the cluster integration UI tests."
         group = "verification"
@@ -254,6 +257,7 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
     task {
         dependsOn(tasks["copyKey"])
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
         description = "Runs the public integration UI tests."
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
@@ -294,7 +298,6 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
     task {
         jvmArgumentProviders += CommandLineArgumentProvider {
             listOf(
-                "-Drobot-server.port=8082",
                 "-Dide.mac.message.dialogs.as.sheets=false",
                 "-Djb.privacy.policy.text=<!--999.999-->",
                 "-Djb.consents.confirmation.enabled=false",
