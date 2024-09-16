@@ -206,7 +206,7 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -247,7 +247,7 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -287,7 +287,7 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6-SNAPSHOT:test")
+        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
