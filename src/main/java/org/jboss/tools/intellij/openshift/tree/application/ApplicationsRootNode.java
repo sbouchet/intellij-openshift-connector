@@ -89,14 +89,13 @@ public class ApplicationsRootNode
 
   private CompletableFuture<ApplicationRootNodeOdo> doGetOdo() {
     if (odoFuture == null) {
-      this.odoFuture =
-        ReadAction.compute(() -> ToolFactory.getInstance()
-          .createOdo(project)
-          .thenApply(tool -> {
-            ApplicationRootNodeOdo odo = new ApplicationRootNodeOdo(tool.get(), tool.isDownloaded(), this, processHelper);
-            loadProjectModel(odo, project);
-            return odo;
-          }));
+      ReadAction.run(() -> this.odoFuture = ToolFactory.getInstance()
+        .createOdo(project)
+        .thenApply(tool -> {
+          ApplicationRootNodeOdo odo = new ApplicationRootNodeOdo(tool.get(), tool.isDownloaded(), this, processHelper);
+          loadProjectModel(odo, project);
+          return odo;
+        }));
     }
     return odoFuture;
   }
