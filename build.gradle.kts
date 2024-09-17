@@ -180,7 +180,7 @@ configurations["itImplementation"].extendsFrom(configurations.testImplementation
 val integrationTest by intellijPlatformTesting.testIde.registering {
     task {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
-        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
+        findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
         description = "Runs the integration tests."
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
@@ -206,7 +206,6 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -216,7 +215,8 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
     task {
         dependsOn(tasks["copyKey"])
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
-        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
+        findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
+        findProperty("testProjectLocation")?.let { systemProperty("testProjectLocation", it) }
         systemProperties["CLUSTER_ALREADY_LOGGED_IN"] = System.getenv("CLUSTER_ALREADY_LOGGED_IN") ?: false
         description = "Runs the cluster integration UI tests."
         group = "verification"
@@ -247,7 +247,6 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -257,7 +256,8 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
     task {
         dependsOn(tasks["copyKey"])
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
-        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
+        findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
+        findProperty("testProjectLocation")?.let { systemProperty("testProjectLocation", it) }
         description = "Runs the public integration UI tests."
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
@@ -287,7 +287,6 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
-        testImplementation("com.redhat.devtools.intellij:intellij-common:1.9.6:test")
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
