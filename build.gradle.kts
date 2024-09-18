@@ -12,6 +12,7 @@ plugins {
 group = "org.jboss.tools.intellij"
 version = providers.gradleProperty("projectVersion").get() // Plugin version
 val ideaVersion = providers.gradleProperty("platformVersion").get()
+val devtoolsCommonForTests = "com.redhat.devtools.intellij:intellij-common:" + libs.devtools.common + ":test"
 
 // Set the JVM language level used to build the project.
 java {
@@ -206,6 +207,7 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
+        testImplementation(devtoolsCommonForTests)
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -247,6 +249,7 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
+        testImplementation(devtoolsCommonForTests)
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
@@ -287,6 +290,7 @@ val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(libs.junit.jupiter)
         testImplementation(libs.junit.jupiter.api)
         testImplementation(libs.junit.jupiter.engine)
+        testImplementation(devtoolsCommonForTests)
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
     }
