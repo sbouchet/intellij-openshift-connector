@@ -110,7 +110,7 @@ tasks {
 
     runIde {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "debug")
-        systemProperty("tools.dl.path", System.getProperty("tools.dl.path"))
+        findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
         //systemProperty("jboss.sandbox.api.endpoint", "http://localhost:3000") // enable when running sandbox locally, see below
     }
 
