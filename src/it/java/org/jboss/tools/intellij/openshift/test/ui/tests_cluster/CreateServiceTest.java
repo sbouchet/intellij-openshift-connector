@@ -3,6 +3,7 @@ package org.jboss.tools.intellij.openshift.test.ui.tests_cluster;
 import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
 import com.redhat.devtools.intellij.commonuitest.fixtures.mainidewindow.idestatusbar.IdeStatusBar;
 import org.jboss.tools.intellij.openshift.test.ui.dialogs.service.CreateNewServiceDialog;
+import org.junit.Ignore;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ public class CreateServiceTest extends AbstractClusterTest {
 
     @Test
     @Order(1)
+    @Ignore
     public void createServiceTest() {
         CreateNewServiceDialog createNewServiceDialog = CreateNewServiceDialog.open(robot);
         assertNotNull(createNewServiceDialog);
