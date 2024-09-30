@@ -213,7 +213,7 @@ val integrationTest by intellijPlatformTesting.testIde.registering {
     }
 }
 
-val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
+val integrationUITest by intellijPlatformTesting.testIde.registering {
     task {
         dependsOn(tasks["copyKey"])
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
@@ -232,48 +232,8 @@ val clusterIntegrationUITest by intellijPlatformTesting.testIde.registering {
             showFullStackTraces = true
         }
         jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
-        include("**/ClusterTestsSuite.class")
-        useJUnitPlatform {
-            includeTags("ui-test")
-        }
-        shouldRunAfter(tasks["test"])
-    }
-
-    plugins {
-        robotServerPlugin()
-    }
-
-    dependencies {
-        testImplementation(libs.junit.platform.launcher)
-        testImplementation(libs.junit.platform.suite)
-        testImplementation(libs.junit.jupiter)
-        testImplementation(libs.junit.jupiter.api)
-        testImplementation(libs.junit.jupiter.engine)
-        testImplementation(devtoolsCommonForTests)
-        testImplementation(libs.devtools.common.ui.test)
-        testImplementation(libs.awaitility)
-    }
-}
-
-val publicIntegrationUITest by intellijPlatformTesting.testIde.registering {
-    task {
-        dependsOn(tasks["copyKey"])
-        systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
-        findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
-        findProperty("testProjectLocation")?.let { systemProperty("testProjectLocation", it) }
-        description = "Runs the public integration UI tests."
-        group = "verification"
-        testClassesDirs = sourceSets["it"].output.classesDirs
-        classpath = sourceSets["it"].runtimeClasspath
-        testlogger {
-            showStandardStreams = true
-            showPassedStandardStreams = false
-            showSkippedStandardStreams = false
-            showFailedStandardStreams = true
-            showFullStackTraces = true
-        }
-        jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
-        include("**/PublicTestsSuite.class")
+        val includes = if (System.getenv("CLUSTER_ALREADY_LOGGED_IN") != null) "**/PublicTestsSuite.class" else "**/ClusterTestsSuite.class"
+        include(includes)
         useJUnitPlatform {
             includeTags("ui-test")
         }
