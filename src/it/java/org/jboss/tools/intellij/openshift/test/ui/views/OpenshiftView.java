@@ -13,7 +13,10 @@ package org.jboss.tools.intellij.openshift.test.ui.views;
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.data.RemoteComponent;
 import com.intellij.remoterobot.fixtures.*;
+import com.redhat.devtools.intellij.commonuitest.UITestRunner;
+import com.redhat.devtools.intellij.commonuitest.fixtures.mainidewindow.toolwindowspane.ToolWindowLeftToolbar;
 import com.redhat.devtools.intellij.commonuitest.fixtures.mainidewindow.toolwindowspane.ToolWindowPane;
+import org.jboss.tools.intellij.openshift.test.ui.runner.IdeaRunner;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +30,7 @@ import static org.jboss.tools.intellij.openshift.test.ui.utils.constants.LabelCo
 import static org.jboss.tools.intellij.openshift.test.ui.utils.constants.XPathConstants.*;
 
 /**
- *
  * @author Ihor Okhrimenko, Ondrej Dockal, Martin Szuc
- *
  */
 @DefaultXpath(by = "OpenshiftView type", xpath = IDE_FRAME_IMPL)
 @FixtureName(name = "Openshift View")
@@ -42,18 +43,21 @@ public class OpenshiftView extends ContainerFixture {
 
     public void openView() {
         if (!isViewOpened()) {
-            final ToolWindowPane toolWindowPane = find(ToolWindowPane.class);
-            toolWindowPane.button(byXpath(getToolWindowButton(OPENSHIFT)), Duration.ofSeconds(2)).click();
+            clickStripeButton();
             LOGGER.info("Openshift view opened");
         }
     }
 
     public void closeView() {
         if (isViewOpened()) {
-            final ToolWindowPane toolWindowPane = find(ToolWindowPane.class);
-            toolWindowPane.button(byXpath(getToolWindowButton(OPENSHIFT)), Duration.ofSeconds(2)).click();
+            clickStripeButton();
             LOGGER.info("Openshift view closed");
         }
+    }
+
+    private void clickStripeButton() {
+        ToolWindowLeftToolbar toolWindowLeftToolbar = find(ToolWindowLeftToolbar.class, Duration.ofSeconds(10));
+        toolWindowLeftToolbar.clickStripeButton(OPENSHIFT);
     }
 
     public void expandOpenshiftViewTree(String path) {
@@ -88,8 +92,7 @@ public class OpenshiftView extends ContainerFixture {
 
     private boolean isViewOpened() {
         try {
-            final ToolWindowPane toolWindowPane = find(ToolWindowPane.class);
-            toolWindowPane.find(ComponentFixture.class, byXpath(OPENSHIFT_BASELABEL));
+            find(ComponentFixture.class, byXpath(OPENSHIFT_BASELABEL), Duration.ofSeconds(5));
             LOGGER.info("Openshift view: View is already opened");
             return true;
         } catch (Exception ignored) {
@@ -100,6 +103,7 @@ public class OpenshiftView extends ContainerFixture {
 
     /**
      * Checks if a menu option exists without clicking it.
+     *
      * @param robot the RemoteRobot instance
      * @param selection the label of the menu option to check
      * @param row the row index to right-click

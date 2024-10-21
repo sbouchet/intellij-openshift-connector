@@ -100,7 +100,6 @@ public class ProjectClusterTest extends AbstractClusterTest {
     private void verifyProjectIsVisible(String projectName) {
         LOGGER.info("Verifying project creation for: " + projectName);
         OpenshiftView view = robot.find(OpenshiftView.class);
-        view.refreshTree(robot);
         sleep(3000);
         try{
             view.expandOpenshiftExceptDevfile();
@@ -114,7 +113,6 @@ public class ProjectClusterTest extends AbstractClusterTest {
     public static void verifyProjectHasItem(String projectName, String itemName) {
         LOGGER.info("Verifying project " + projectName + " has item: " + itemName);
         OpenshiftView view = robot.find(OpenshiftView.class);
-        view.refreshTree(robot);
         IdeStatusBar ideStatusBar = robot.find(IdeStatusBar.class, Duration.ofSeconds(2));
         ideStatusBar.waitUntilAllBgTasksFinish();
 

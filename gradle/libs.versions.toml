@@ -2,7 +2,7 @@
 # libraries
 junit = "4.13.2"
 openshift-client = "6.12.0"
-devtools-common = "1.9.6"
+devtools-common = "1.9.7-SNAPSHOT"
 keycloak = "24.0.5"
 jsonwebtoken = "0.12.6"
 retrofit2 = "2.11.0"
@@ -11,7 +11,7 @@ easytesting = "1.4"
 mockserver = "5.15.0"
 junit-platform = "1.10.3"
 junit-jupiter = "5.10.3"
-devtools-common-ui-test = "0.4.2"
+devtools-common-ui-test = "0.4.3-SNAPSHOT"
 awaitility = "4.2.2"
 annotations = "24.0.0"
 

@@ -49,6 +49,16 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
+    components {
+        withModule("com.redhat.devtools.intellij:intellij-common") {
+            withVariant("intellijPlatformComposedJar") {
+                attributes {
+                    attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+                }
+            }
+        }
+    }
+
     implementation(libs.openshift.client)
     implementation(libs.devtools.common)
     implementation(libs.keycloak)
@@ -232,7 +242,7 @@ val integrationUITest by intellijPlatformTesting.testIde.registering {
             showFullStackTraces = true
         }
         jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
-        val includes = if (System.getenv("CLUSTER_ALREADY_LOGGED_IN") != null) "**/PublicTestsSuite.class" else "**/ClusterTestsSuite.class"
+        val includes = if (System.getenv("CLUSTER_ALREADY_LOGGED_IN") == null) "**/PublicTestsSuite.class" else "**/ClusterTestsSuite.class"
         include(includes)
         useJUnitPlatform {
             includeTags("ui-test")

@@ -11,6 +11,10 @@
 package org.jboss.tools.intellij.openshift.test.ui.tests_public;
 
 import com.intellij.remoterobot.fixtures.ComponentFixture;
+import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
+import com.redhat.devtools.intellij.commonuitest.UITestRunner;
+import com.redhat.devtools.intellij.commonuitest.fixtures.mainidewindow.toolwindowspane.ToolWindowLeftToolbar;
+import com.redhat.devtools.intellij.commonuitest.fixtures.mainidewindow.toolwindowspane.ToolWindowPane;
 import com.redhat.devtools.intellij.commonuitest.utils.constants.XPathDefinitions;
 import org.jboss.tools.intellij.openshift.test.ui.AbstractBaseTest;
 import org.jboss.tools.intellij.openshift.test.ui.utils.constants.LabelConstants;
@@ -87,6 +91,7 @@ public class OpenshiftExtensionTest extends AbstractBaseTest {
                 "defaultNodeTest: End");
 
     }
+
     @Test
     @Order(4)
     public void openGettingStartedFromOpenshiftView() {
@@ -101,5 +106,15 @@ public class OpenshiftExtensionTest extends AbstractBaseTest {
 
         gettingStartedView.closeView();
         openshiftView.closeView();
+    }
+
+    private boolean isStripeButtonAvailable(String label) {
+        try {
+            ToolWindowLeftToolbar toolWindowLeftToolbar = robot.find(ToolWindowLeftToolbar.class, Duration.ofSeconds(10));
+            toolWindowLeftToolbar.stripeButton(OPENSHIFT);
+        } catch (WaitForConditionTimeoutException e) {
+            return false;
+        }
+        return true;
     }
 }

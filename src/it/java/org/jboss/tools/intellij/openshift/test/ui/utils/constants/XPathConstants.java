@@ -24,6 +24,7 @@ public class XPathConstants {
     public static final String BUTTON_YES = "//div[@text='Yes']";
     public static final String COPY = "//div[contains(@text.key, 'action.$Copy.text')]";
     public static final String GETTING_STARTED_BASELABEL = "//div[@accessiblename='Getting Started' and @class='BaseLabel' and @text='Getting Started']";
+    public static final String HEAVY_WEIGHT_WINDOW = "//div[@class='HeavyWeightWindow']";
     public static final String HIDE_BUTTON = "//div[@class='ToolWindowHeader'][.//div[@class='ContentTabLabel']]//div[@myaction.key='tool.window.hide.action.name']";
     public static final String IDE_FRAME_IMPL = "//div[@class='IdeFrameImpl']";
     public static final String JBTEXTFIELD = "//div[@class='JBTextField']";
