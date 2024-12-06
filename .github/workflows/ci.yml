@@ -125,8 +125,20 @@ jobs:
           add-job-summary: 'on-failure'
           add-job-summary-as-pr-comment: 'on-failure'
           validate-wrappers: true
+      - name: Monitor System Resources before Starting Cluster
+        run: |
+          echo "CPU and Memory Usage Before Starting Cluster:"
+          top -b -n1 | head -n 20
+          echo "Disk Usage Before Starting Cluster:"
+          df -h
       - uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde #v1.10.0
         name: Start cluster
+      - name: Monitor System Resources after Starting Cluster
+        run: |
+          echo "CPU and Memory Usage After Starting Cluster:"
+          top -b -n1 | head -n 20
+          echo "Disk Usage After Starting Cluster:"
+          df -h
       # service setup disabled along with service test because service binding operator is deprecated, and postgres service isn't available anymore
       #        - name: Setup cluster
       #        run: |
@@ -150,7 +162,13 @@ jobs:
           export DISPLAY=:99.0
           Xvfb -ac :99 -screen 0 1920x1080x16 &
           sleep 10
-          ./gradlew integrationUITest --continue
+          ./gradlew integrationUITest --continue --info
+      - name: Monitor System Resources after Running Tests
+        run: |
+          echo "CPU and Memory Usage After Running Tests:"
+          top -b -n1 | head -n 20
+          echo "Disk Usage After Running Tests:"
+          df -h
       - name: Publish tests reports
         if: always()
         uses: scacap/action-surefire-report@a2911bd1a4412ec18dde2d93b1758b3e56d2a880 #v1.8.0
