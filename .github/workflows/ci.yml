@@ -131,8 +131,14 @@ jobs:
           top -b -n1 | head -n 20
           echo "Disk Usage Before Starting Cluster:"
           df -h
-      - uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde #v1.10.0
+      - uses: AbsaOSS/k3d-action@v2
         name: Start cluster
+        with:
+          cluster-name: "test-cluster-1"
+          args: >-
+            --agents 3
+            --no-lb
+            --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: Monitor System Resources after Starting Cluster
         run: |
           echo "CPU and Memory Usage After Starting Cluster:"
