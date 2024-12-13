@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.intellij.openshift.test.ui.tests_cluster;
 
+import com.automation.remarks.video.annotations.Video;
 import com.intellij.remoterobot.fixtures.ComponentFixture;
 import org.jboss.tools.intellij.openshift.test.ui.tests_public.AboutPublicTest;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,9 @@ import static org.jboss.tools.intellij.openshift.test.ui.utils.constants.XPathCo
 public class AboutClusterTest extends AbstractClusterTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AboutClusterTest.class);
 
+
     @Test
+    @Video
     public void aboutLoggedInTest() {
         LOGGER.info("aboutLoggedInTest: Start");
 
