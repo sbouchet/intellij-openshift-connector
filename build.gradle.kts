@@ -271,6 +271,8 @@ val integrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(devtoolsCommonForTests)
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
+        // Video Recording
+        implementation("com.automation-remarks:video-recorder-junit5:2.0")
     }
 }
 
