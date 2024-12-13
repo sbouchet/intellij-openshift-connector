@@ -156,11 +156,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Setup FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v2
+        uses: FedericoCarboni/setup-ffmpeg@v3
         with:
           # Not strictly necessary, but it may prevent rate limit
           # errors especially on GitHub-hosted macos machines.
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Play cluster integration UI tests
         env:
           CLUSTER_ALREADY_LOGGED_IN: 'true'
@@ -191,7 +191,9 @@ jobs:
           path: ./build/screenshots$
       - name: Move video
         if: failure()
-        run: mv ./video ./build/reports
+        run: |
+          ls
+          mv ./video ./build/reports
       - name: Save fails report
         if: failure()
         uses: actions/upload-artifact@v4
