@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.intellij.openshift.test.ui.tests_cluster;
 
-import com.automation.remarks.video.annotations.Video;
 import com.intellij.remoterobot.fixtures.ComponentFixture;
 import org.jboss.tools.intellij.openshift.test.ui.tests_public.AboutPublicTest;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,6 @@ public class AboutClusterTest extends AbstractClusterTest {
 
 
     @Test
-    @Video
     public void aboutLoggedInTest() {
         LOGGER.info("aboutLoggedInTest: Start");
 

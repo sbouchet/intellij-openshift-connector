@@ -201,6 +201,7 @@ configurations["itImplementation"].extendsFrom(configurations.testImplementation
 val integrationTest by intellijPlatformTesting.testIde.registering {
     task {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperty("intellij_debug", "true")
         findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
         description = "Runs the integration tests."
         group = "verification"
@@ -271,8 +272,6 @@ val integrationUITest by intellijPlatformTesting.testIde.registering {
         testImplementation(devtoolsCommonForTests)
         testImplementation(libs.devtools.common.ui.test)
         testImplementation(libs.awaitility)
-        // Video Recording
-        implementation("com.automation-remarks:video-recorder-junit5:2.0")
     }
 }
 
@@ -286,6 +285,7 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
         }
         systemProperty("jb.privacy.policy.text", "<!--999.999-->")
         systemProperty("jb.consents.confirmation.enabled", "false")
+        systemProperty("intellij_debug", "true")
     }
     plugins {
         robotServerPlugin()
