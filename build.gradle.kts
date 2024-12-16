@@ -1,10 +1,13 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 plugins {
+    id("idea")
     id("java") // Java support
     alias(libs.plugins.gradleIntelliJPlugin) // Gradle IntelliJ Plugin
-    alias(libs.plugins.testLogger) // Nice test logs
     id("jacoco") // Code coverage
     alias(libs.plugins.sonarqube) // SonarQube
 }
@@ -127,6 +130,13 @@ tasks {
     test {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
         jvmArgs("-Djava.awt.headless=true")
+        useJUnit()
+        testLogging {
+            events(TestLogEvent.FAILED)
+            exceptionFormat = TestExceptionFormat.FULL
+            showStackTraces = true
+            showStandardStreams = false
+        }
     }
 
     withType<Test> {
@@ -165,6 +175,11 @@ tasks {
         mainClass.set("org.jboss.tools.intellij.openshift.ui.sandbox.SandboxRegistrationServerMock")
     }
 
+    printProductsReleases {
+        channels = listOf(ProductRelease.Channel.EAP)
+        types = listOf(IntelliJPlatformType.IntellijIdeaCommunity)
+        untilBuild = provider { null }
+    }
 }
 
 sourceSets {
@@ -186,27 +201,28 @@ configurations["itImplementation"].extendsFrom(configurations.testImplementation
 val integrationTest by intellijPlatformTesting.testIde.registering {
     task {
         systemProperty("com.redhat.devtools.intellij.telemetry.mode", "disabled")
+        systemProperty("intellij_debug", "true")
         findProperty("tools.dl.path")?.let { systemProperty("tools.dl.path", it) }
         description = "Runs the integration tests."
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
         classpath = sourceSets["it"].runtimeClasspath
-        testlogger {
-            showStandardStreams = true
-            showPassedStandardStreams = false
-            showSkippedStandardStreams = false
-            showFailedStandardStreams = true
-            showFullStackTraces = true
+        testLogging {
+            events(TestLogEvent.FAILED)
+            exceptionFormat = TestExceptionFormat.FULL
+            showStackTraces = true
+            showStandardStreams = false
         }
         jvmArgs("-Djava.awt.headless=true")
+        useJUnitPlatform {
+            includeEngines("junit-vintage")
+            excludeEngines("junit-jupiter")
+        }
         shouldRunAfter(tasks["test"])
     }
 
-    plugins {
-        robotServerPlugin()
-    }
-
     dependencies {
+        testRuntimeOnly(libs.junit.vintage.engine)
         testImplementation(libs.junit.platform.launcher)
         testImplementation(libs.junit.platform.suite)
         testImplementation(libs.junit.jupiter)
@@ -228,12 +244,11 @@ val integrationUITest by intellijPlatformTesting.testIde.registering {
         group = "verification"
         testClassesDirs = sourceSets["it"].output.classesDirs
         classpath = sourceSets["it"].runtimeClasspath
-        testlogger {
+        testLogging {
+            events(TestLogEvent.FAILED)
+            exceptionFormat = TestExceptionFormat.FULL
+            showStackTraces = true
             showStandardStreams = true
-            showPassedStandardStreams = false
-            showSkippedStandardStreams = false
-            showFailedStandardStreams = true
-            showFullStackTraces = true
         }
         jvmArgs("-Djava.awt.headless=false") // use of clipboard in AboutPublicTest, set to false
         val includes = if (System.getenv("CLUSTER_ALREADY_LOGGED_IN") == null) "**/PublicTestsSuite.class" else "**/ClusterTestsSuite.class"
@@ -265,11 +280,12 @@ val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
     task {
         jvmArgumentProviders += CommandLineArgumentProvider {
             listOf(
-                "-Dide.mac.message.dialogs.as.sheets=false",
-                "-Djb.privacy.policy.text=<!--999.999-->",
-                "-Djb.consents.confirmation.enabled=false",
+                "-Dide.mac.message.dialogs.as.sheets=false"
             )
         }
+        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
+        systemProperty("jb.consents.confirmation.enabled", "false")
+        systemProperty("intellij_debug", "true")
     }
     plugins {
         robotServerPlugin()
